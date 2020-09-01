@@ -1,0 +1,3 @@
+[submodule "eNNclave"]
+	path = eNNclave
+	url = git@github.com:alxshine/eNNclave.git
