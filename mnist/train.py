@@ -1,13 +1,10 @@
-import tensorflow.keras as keras
-from tensorflow.keras.datasets import mnist
-from tensorflow.keras.models import Sequential
+import pandas as pd
+import tensorflow as tf
 import tensorflow.keras.layers as layers
 from tensorflow.keras.losses import sparse_categorical_crossentropy
-import tensorflow as tf
-import pandas as pd
+from tensorflow.keras.models import Sequential
 
 import mnist.prepare_data as prepare_data
-import utils
 
 # hyperparameters
 MODEL_FILE = 'models/mnist.h5'
