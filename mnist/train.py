@@ -6,7 +6,7 @@ from tensorflow.keras.losses import sparse_categorical_crossentropy
 import tensorflow as tf
 import pandas as pd
 
-import mnist_prepare_data
+import mnist.prepare_data as prepare_data
 import utils
 
 # hyperparameters
@@ -25,8 +25,8 @@ INPUT_SHAPE = (28, 28, 1)
 
 tf.compat.v1.set_random_seed(1337)
 
-x_train, y_train = mnist_prepare_data.load_train_set()
-x_test, y_test = mnist_prepare_data.load_test_set()
+x_train, y_train = prepare_data.load_train_set()
+x_test, y_test = prepare_data.load_test_set()
 
 model = Sequential([
     layers.Input(INPUT_SHAPE),
