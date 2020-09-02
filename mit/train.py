@@ -18,12 +18,12 @@ import experiment_utils
 import mit.prepare_data as prepare_data
 
 x_train, y_train = prepare_data.load_train_set()
-x_test, y_test = prepare_data.load_test_set()
-
-# generate datasets
 train_ds = experiment_utils.generate_dataset(x_train, y_train, preprocess_function=None)
+del x_train, y_train
+x_test, y_test = prepare_data.load_test_set()
 test_ds = experiment_utils.generate_dataset(
     x_test, y_test, shuffle=False, repeat=False, preprocess_function=None)
+del x_test, y_test
 
 # build model
 MODEL_FILE = 'models/mit.h5'
@@ -56,8 +56,8 @@ for layer in dense.layers:
 print('Hyperparameters:')
 print('num_epochs: {}'.format(NUM_EPOCHS))
 print('hidden_neurons: {}'.format(HIDDEN_NEURONS))
-print('training set size: {}'.format(len(y_train)))
-print('test set size: {}'.format(len(y_test)))
+# print('training set size: {}'.format(len(y_train)))
+# print('test set size: {}'.format(len(y_test)))
 print()
 
 model.compile(optimizer='adam',

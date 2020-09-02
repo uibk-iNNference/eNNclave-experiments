@@ -1,14 +1,11 @@
-import tensorflow as tf
 import os
 import os.path as path
+
 import numpy as np
 import pandas as pd
-
+import tensorflow as tf
 from tensorflow.python.keras.preprocessing import sequence
 from tensorflow.python.keras.preprocessing import text
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import f_classif
 
 # Vectorization parameters
 
