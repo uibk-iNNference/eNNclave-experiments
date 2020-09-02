@@ -18,10 +18,10 @@ import os
 import json
 
 import utils
-import mit_prepare_data
+import mit.prepare_data as prepare_data
 
-x_train, y_train = mit_prepare_data.load_train_set()
-x_test, y_test = mit_prepare_data.load_test_set()
+x_train, y_train = prepare_data.load_train_set()
+x_test, y_test = prepare_data.load_test_set()
 
 # generate datasets
 train_ds = utils.generate_dataset(x_train, y_train, preprocess_function=None)
