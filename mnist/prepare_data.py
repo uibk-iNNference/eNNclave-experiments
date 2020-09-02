@@ -12,7 +12,7 @@ def load_test_set(data_dir='datasets'):
         os.makedirs(join(data_dir, 'mnist'), exist_ok=True)
 
         _, (x_test, y_test) = mnist.load_data()
-        x_test = (x_test/255).reshape(-1, 28, 28, 1)
+        x_test = (x_test / 255).reshape(-1, 28, 28, 1)
         np.save(join(data_dir, "mnist/x_test.npy"), x_test)
         np.save(join(data_dir, "mnist/y_test.npy"), y_test)
 
@@ -27,7 +27,7 @@ def load_train_set(data_dir='datasets'):
         os.makedirs(join(data_dir, 'mnist'), exist_ok=True)
 
         (x_train, y_train), _ = mnist.load_data()
-        x_train = (x_train/255).reshape(-1, 28, 28, 1)
+        x_train = (x_train / 255).reshape(-1, 28, 28, 1)
         np.save(join(data_dir, "mnist/x_train.npy"), x_train)
         np.save(join(data_dir, "mnist/y_train.npy"), y_train)
 
