@@ -4,7 +4,7 @@ import numpy as np
 
 from enclave_model import Enclave
 from enclave_layer import EnclaveLayer
-import utils
+import experiment_utils
 import interop.pymatutil as pymatutil
 
 from flowers_prepare_data import load_data

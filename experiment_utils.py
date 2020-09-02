@@ -29,6 +29,7 @@ MIN_DOCUMENT_FREQUENCY = 2
 # will be truncated.
 MAX_SEQUENCE_LENGTH = 500
 
+
 def get_all_layers(model):
     """ Get all layers of model, including ones inside a nested model """
     layers = []
@@ -39,11 +40,27 @@ def get_all_layers(model):
             layers.append(l)
     return layers
 
+
+def preprocess_vgg(images):
+    processed_images = np.empty((len(images), 224, 224, 3))
+    for i, image_path in enumerate(images):
+        image = tf.io.read_file(image_path)
+        try:
+            image = tf.image.decode_jpeg(image, channels=3)
+        except tf.errors.InvalidArgumentError:
+            image = tf.image.decode_bmp(image, channels=3)
+        image = tf.cast(image, tf.float32)
+        image = (image / 127.5) - 1
+        image = tf.image.resize(image, (224, 224))
+        processed_images[i] = image
+    return processed_images
+
+
 def preprocess(x, y, img_size):
     image = tf.io.read_file(x)
     image = tf.image.decode_jpeg(image, channels=3)
     image = tf.cast(image, tf.float32)
-    image = (image/127.5) - 1
+    image = (image / 127.5) - 1
     image = tf.image.resize(image, (img_size, img_size))
 
     return image, y
@@ -60,10 +77,12 @@ def preprocess_lfw(x, y):
 def preprocess_faces(x, y):
     return preprocess(x, y, 224)
 
+
 def preprocess_mnist(x, y):
     x = tf.cast(x, tf.float32)
-    x = (x/127.5) - 1
+    x = (x / 127.5) - 1
     return x, y
+
 
 def preprocess_224(x, y):
     return preprocess(x, y, 224)
@@ -89,6 +108,7 @@ def generate_dataset(x, y, preprocess_function=preprocess_224,
 
     return ds
 
+
 def get_num_classes(labels):
     """Gets the total number of classes.
 
@@ -111,8 +131,8 @@ def get_num_classes(labels):
                          '{missing_classes}. Please make sure you have '
                          'at least one sample for every label value '
                          'in the range(0, {max_class})'.format(
-                            missing_classes=missing_classes,
-                            max_class=num_classes - 1))
+            missing_classes=missing_classes,
+            max_class=num_classes - 1))
 
     if num_classes <= 1:
         raise ValueError('Invalid number of labels: {num_classes}.'
@@ -133,11 +153,13 @@ def get_num_words_per_sample(sample_texts):
     num_words = [len(s.split()) for s in sample_texts]
     return np.median(num_words)
 
+
 def get_dataset_from_model_path(model_path):
     basename = path.basename(model_path)
     without_extension, _ = path.splitext(basename)
     dataset = without_extension.split('_')[0]
     return dataset
+
 
 def sequence_vectorize(train_texts, val_texts):
     """Vectorizes texts as sequence vectors.
@@ -172,12 +194,13 @@ def sequence_vectorize(train_texts, val_texts):
     x_val = sequence.pad_sequences(x_val, maxlen=max_length)
     return x_train, x_val, tokenizer.word_index
 
+
 def load_and_shuffle_data(data_path,
-                           file_name,
-                           cols,
-                           seed,
-                           separator=',',
-                           header=0):
+                          file_name,
+                          cols,
+                          seed,
+                          separator=',',
+                          header=0):
     """Loads and shuffles the dataset using pandas.
 
     # Arguments

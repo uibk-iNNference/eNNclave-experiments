@@ -12,7 +12,7 @@ import os
 
 import interop.pymatutil as pymatutil
 from enclave_layer import EnclaveLayer
-import utils
+import experiment_utils
 
 import build_enclave
 import mit_prepare_data
@@ -48,7 +48,7 @@ def _predict_samples(samples, num_classes, forward):
     
 def time_enclave_prediction(model, samples):
     # test if model has enclave part
-    all_layers = utils.get_all_layers(model)
+    all_layers = experiment_utils.get_all_layers(model)
     has_enclave = any([l.name == 'enclave_layer' for l in all_layers])
 
     if has_enclave:
@@ -157,7 +157,7 @@ if __name__ == '__main__':
 
     model_path = sys.argv[1]
     layers_in_enclave = int(sys.argv[2])
-    dataset = utils.get_dataset_from_model_path(model_path)
+    dataset = experiment_utils.get_dataset_from_model_path(model_path)
 
     np.random.seed(1337)
     sample_index = 42

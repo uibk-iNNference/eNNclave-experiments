@@ -14,7 +14,7 @@ from os.path import join
 import os
 import json
 
-import utils
+import experiment_utils
 import mit_prepare_data
 
 # build model
@@ -52,8 +52,8 @@ x_train, y_train = mit_prepare_data.load_train_set()
 x_test, y_test = mit_prepare_data.load_test_set()
 
 # generate datasets
-train_ds = utils.generate_dataset(x_train, y_train, preprocess_function=None)
-test_ds = utils.generate_dataset(
+train_ds = experiment_utils.generate_dataset(x_train, y_train, preprocess_function=None)
+test_ds = experiment_utils.generate_dataset(
     x_test, y_test, shuffle=False, repeat=False, preprocess_function=None)
 
 

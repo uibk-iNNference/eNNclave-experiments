@@ -4,7 +4,7 @@ from tensorflow.keras.applications import VGG19
 import tensorflow.keras.layers as layers
 
 from flowers_prepare_data import load_data
-import utils
+import experiment_utils
 
 IMG_SIZE = 224
 
@@ -16,7 +16,7 @@ extractor = VGG19(include_top=False, input_shape=(224,224,3))
 
 model = Sequential()
 
-all_layers = utils.get_all_layers(extractor)
+all_layers = experiment_utils.get_all_layers(extractor)
 for l in all_layers:
     l.trainable = False
     model.add(l)

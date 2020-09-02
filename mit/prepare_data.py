@@ -1,8 +1,25 @@
-import tensorflow as tf
-
-import os
 import json
+import os
+
 import numpy as np
+
+import experiment_utils
+
+
+def generate_class_labels(test_images_path, label_file_path):
+    with open(test_images_path, 'r') as label_file:
+        all_labels = [label.split('/')[0] for label in label_file]
+
+    labels = set(all_labels)
+    label_dict = {}
+    i = 0
+    for label in labels:
+        label_dict[label] = i
+        i += 1
+
+    with open(label_file_path, 'w+') as label_file:
+        json.dump(label_dict, label_file, indent=2)
+
 
 def load_test_set(data_dir='datasets', test_file='TestImages.txt'):
     full_path = os.path.join(data_dir, 'mit')
@@ -11,65 +28,52 @@ def load_test_set(data_dir='datasets', test_file='TestImages.txt'):
         print("Trying to load previously generated test data")
         x_test = np.load(os.path.join(full_path, 'x_test.npy'))
         y_test = np.load(os.path.join(full_path, 'y_test.npy'))
-        
+
     except IOError:
-        print("Not found, generating...")
-        with open(os.path.join(full_path, test_file), 'r') as f:
-            test_images = [os.path.join(full_path, l.strip()) for l in f.readlines()]
-
-        with open(os.path.join(full_path, "class_labels.json"), 'r') as f:
-            labels = json.load(f)
-
-        test_labels = [labels[s.split('/')[-2]] for s in test_images]
-        processed_images = np.empty((len(test_images), 224, 224, 3))
-        for i, image in enumerate(test_images):
-            image = tf.io.read_file(image)
-            image = tf.image.decode_jpeg(image, channels=3)
-            image = tf.cast(image, tf.float32)
-            image = (image/127.5) - 1
-            image = tf.image.resize(image, (224, 224))
-            processed_images[i] = image
-
-        x_test = processed_images
-        y_test = np.array(test_labels)
-
-        print("Saving numpy arrays")
-        np.save(os.path.join(full_path, 'x_test.npy'), x_test)
-        np.save(os.path.join(full_path, 'y_test.npy'), y_test)
+        x_test, y_test = _generate_numpy(full_path, test_file, 'test')
 
     return x_test, y_test
+
 
 def load_train_set(data_dir='datasets', train_file='TrainImages.txt'):
     full_path = os.path.join(data_dir, 'mit')
 
     try:
         print("Trying to load previously generated training data")
-        x_train= np.load(os.path.join(full_path, 'x_train.npy'))
-        y_train= np.load(os.path.join(full_path, 'y_train.npy'))
-        
+        x_train = np.load(os.path.join(full_path, 'x_train.npy'))
+        y_train = np.load(os.path.join(full_path, 'y_train.npy'))
+
     except IOError:
-        print("Not found, generating...")
-        with open(os.path.join(full_path, train_file), 'r') as f:
-            train_images = [os.path.join(full_path, l.strip()) for l in f.readlines()]
-
-        with open(os.path.join(full_path, "class_labels.json"), 'r') as f:
-            labels = json.load(f)
-
-        train_labels = [labels[s.split('/')[-2]] for s in train_images]
-        processed_images = np.empty((len(train_images), 224, 224, 3))
-        for i, image in enumerate(train_images):
-            image = tf.io.read_file(image)
-            image = tf.image.decode_jpeg(image, channels=3)
-            image = tf.cast(image, tf.float32)
-            image = (image/127.5) - 1
-            image = tf.image.resize(image, (224, 224))
-            processed_images[i] = image
-
-        x_train= processed_images
-        y_train= np.array(train_labels)
-
-        print("Saving numpy arrays")
-        np.save(os.path.join(full_path, 'x_train.npy'), x_train)
-        np.save(os.path.join(full_path, 'y_train.npy'), y_train)
+        x_train, y_train = _generate_numpy(full_path, train_file, 'train')
 
     return x_train, y_train
+
+
+def load_labels(full_path):
+    label_file_path = os.path.join(full_path, "class_labels.json")
+    if not os.path.isfile(label_file_path):
+        test_image_path = os.path.join(full_path, "TestImages.txt")
+        generate_class_labels(test_image_path, label_file_path)
+    with open(label_file_path, 'r') as f:
+        labels = json.load(f)
+    return labels
+
+
+def _generate_numpy(full_path, selector_file, file_suffix):
+    print("Not found, generating...")
+    with open(os.path.join(full_path, selector_file), 'r') as f:
+        images = [os.path.join(full_path, l.strip()) for l in f.readlines()]
+    labels = load_labels(full_path)
+    processed_images, test_labels = _process_images(labels, images)
+    x = processed_images
+    y = np.array(test_labels)
+    print("Saving numpy arrays")
+    np.save(os.path.join(full_path, f'x_{file_suffix}.npy'), x)
+    np.save(os.path.join(full_path, f'y_{file_suffix}.npy'), y)
+    return x, y
+
+
+def _process_images(labels, images):
+    processed_labels = [labels[s.split('/')[-2]] for s in images]
+    processed_images = experiment_utils.preprocess_vgg(images)
+    return processed_images, processed_labels

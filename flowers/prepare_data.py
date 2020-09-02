@@ -5,7 +5,7 @@ import os
 import numpy as np
 import tensorflow as tf
 
-import utils
+import experiment_utils
 
 def load_data():
     random.seed(1337)

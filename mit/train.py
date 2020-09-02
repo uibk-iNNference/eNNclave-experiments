@@ -1,42 +1,39 @@
 print("Setting seeds")
 from numpy.random import seed
+
 seed(1337)
 import tensorflow as tf
+
 tf.random.set_seed(1337)
 print("Done")
 
 import tensorflow.keras.layers as layers
 import tensorflow.keras.applications as apps
-from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.losses import sparse_categorical_crossentropy
 
 import pandas as pd
 
-
-from os.path import join
-import os
-import json
-
-import utils
+import experiment_utils
 import mit.prepare_data as prepare_data
 
 x_train, y_train = prepare_data.load_train_set()
 x_test, y_test = prepare_data.load_test_set()
 
 # generate datasets
-train_ds = utils.generate_dataset(x_train, y_train, preprocess_function=None)
-test_ds = utils.generate_dataset(
+train_ds = experiment_utils.generate_dataset(x_train, y_train, preprocess_function=None)
+test_ds = experiment_utils.generate_dataset(
     x_test, y_test, shuffle=False, repeat=False, preprocess_function=None)
 
 # build model
 MODEL_FILE = 'models/mit.h5'
 HIST_FILE = 'hist_mit.csv'
 HIDDEN_NEURONS = 2048
-DROPOUT_RATIO=0.4
+DROPOUT_RATIO = 0.4
 NUM_EPOCHS = 2000
 STEPS_PER_EPOCH = 3
 
-extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224,224,3))
+extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
 
 dense = Sequential([
     layers.Dense(HIDDEN_NEURONS, activation='relu'),
@@ -47,16 +44,16 @@ dense = Sequential([
 ])
 
 model = Sequential()
-for l in extractor.layers:
-    l.trainable = False
-    model.add(l)
+for layer in extractor.layers:
+    layer.trainable = False
+    model.add(layer)
 model.add(layers.GlobalAveragePooling2D())
 # model.add(layers.MaxPooling2D(2))
 # model.add(layers.Flatten())
-for l in dense.layers:
-    model.add(l)
+for layer in dense.layers:
+    model.add(layer)
 
-print('Hypeparameters:')
+print('Hyperparameters:')
 print('num_epochs: {}'.format(NUM_EPOCHS))
 print('hidden_neurons: {}'.format(HIDDEN_NEURONS))
 print('training set size: {}'.format(len(y_train)))

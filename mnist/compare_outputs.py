@@ -6,7 +6,7 @@ import numpy as np
 import sys
 import time
 
-import utils
+import experiment_utils
 import interop.pymatutil as pymatutil
 
 from enclave_layer import EnclaveLayer
@@ -24,7 +24,7 @@ enclave_model = load_model(enclave_model_file, custom_objects={'EnclaveLayer': E
 
 print("Taking {} images from MNIST test_set".format(NUM_IMAGES))
 test_ds = tfds.load('mnist', split=tfds.Split.TEST, as_supervised=True)
-test_ds = test_ds.map(utils.preprocess_mnist)
+test_ds = test_ds.map(experiment_utils.preprocess_mnist)
 test_ds = test_ds.shuffle(32).take(NUM_IMAGES)
 test_tuples = [(x.numpy(),y.numpy()) for x,y in test_ds]
 test_images, test_labels = zip(*test_tuples)

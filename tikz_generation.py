@@ -1,6 +1,6 @@
 from tensorflow.keras.models import load_model
 
-from utils import get_all_layers, get_dataset_from_model_path
+from experiment_utils import get_all_layers, get_dataset_from_model_path
 from enclave_layer import EnclaveLayer
 from enclave_model import Enclave
 
