@@ -7,6 +7,7 @@ import tensorflow as tf
 
 import experiment_utils
 
+
 def load_data():
     random.seed(1337)
 
@@ -17,7 +18,7 @@ def load_data():
         y_train = np.load(os.path.join(data_dir, 'y_train.npy'))
         x_test = np.load(os.path.join(data_dir, 'x_test.npy'))
         y_test = np.load(os.path.join(data_dir, 'y_test.npy'))
-        
+
     except IOError:
         print("Not found, generating...")
         data_files = pathlib.Path(data_dir)
@@ -34,27 +35,13 @@ def load_data():
 
         data_size = len(all_images)
 
-        train_test_split = (int)(data_size*0.8)
+        train_test_split = int(data_size * 0.8)
 
         train_images = all_images[:train_test_split]
-        x_train = np.empty((len(train_images), 224, 224, 3))
-        for i, image in enumerate(train_images):
-            image = tf.io.read_file(image)
-            image = tf.image.decode_jpeg(image, channels=3)
-            image = tf.cast(image, tf.float32)
-            image = (image/127.5) - 1
-            image = tf.image.resize(image, (224, 224))
-            x_train[i] = image
+        x_train = experiment_utils.preprocess_vgg(train_images)
 
         test_images = all_images[train_test_split:]
-        x_test = np.empty((len(test_images), 224, 224, 3))
-        for i, image in enumerate(test_images):
-            image = tf.io.read_file(image)
-            image = tf.image.decode_jpeg(image, channels=3)
-            image = tf.cast(image, tf.float32)
-            image = (image/127.5) - 1
-            image = tf.image.resize(image, (224, 224))
-            x_test[i] = image
+        x_test = experiment_utils.preprocess_vgg(test_images)
 
         y_train = np.array(all_labels[:train_test_split])
         y_test = np.array(all_labels[train_test_split:])
