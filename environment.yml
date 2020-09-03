@@ -8,3 +8,4 @@ dependencies:
     - tensorflow-gpu==2.2.0
     - numpy
     - pandas
+    - plotille
