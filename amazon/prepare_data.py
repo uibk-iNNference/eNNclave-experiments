@@ -9,19 +9,18 @@ from os.path import join
 import json
 
 TRAIN_SPLIT = 0.8
-DATA_DIR = 'datasets/amazon'
 
 TOKENIZER_CONFIG_FILE = 'datasets/amazon/tokenizer_config.json'
 
-def load_books(num_words, sequence_length, seed = 1337, verbose = 0):
+
+def load_books(num_words, sequence_length, data_dir='datasets/amazon', seed=1337, verbose=0):
     print('Loading books')
-    data_dir = join(DATA_DIR, 'books')
     data = pd.read_pickle(join(data_dir, 'books.pkl'))
 
     train_data = pd.DataFrame(columns=data.columns)
     test_data = pd.DataFrame(columns=data.columns)
 
-    for i in range(1,6):
+    for i in range(1, 6):
         current_data = data.where(data['rating'] == i)
         current_train_data = current_data.sample(frac=TRAIN_SPLIT, replace=False, random_state=seed).dropna(how='all')
         current_test_data = current_data[~current_data.isin(current_train_data)].dropna(how='all')
@@ -66,15 +65,15 @@ def load_books(num_words, sequence_length, seed = 1337, verbose = 0):
 
     return x_train, y_train, x_test, y_test
 
-def load_cds(num_words, sequence_length, seed = 1337, verbose = 0):
+
+def load_cds(num_words, sequence_length, data_dir='datasets/amazon', seed=1337, verbose=0):
     print('Loading cds')
-    data_dir = join(DATA_DIR, 'cds')
     data = pd.read_pickle(join(data_dir, 'cds.pkl'))
 
     train_data = pd.DataFrame(columns=data.columns)
     test_data = pd.DataFrame(columns=data.columns)
 
-    for i in range(1,6):
+    for i in range(1, 6):
         current_data = data.where(data['rating'] == i)
         current_train_data = current_data.sample(frac=TRAIN_SPLIT, replace=False, random_state=seed).dropna(how='all')
         current_test_data = current_data[~current_data.isin(current_train_data)].dropna(how='all')
@@ -119,15 +118,15 @@ def load_cds(num_words, sequence_length, seed = 1337, verbose = 0):
 
     return x_train, y_train, x_test, y_test
 
-def rebuild_cds(num_words, sequence_length, seed = 1337):
+
+def rebuild_cds(num_words, sequence_length, data_dir='datasets/amazon', seed=1337):
     print('Loading cds')
-    data_dir = join(DATA_DIR, 'cds')
     data = pd.read_pickle(join(data_dir, 'cds.pkl'))
 
     train_data = pd.DataFrame(columns=data.columns)
     test_data = pd.DataFrame(columns=data.columns)
 
-    for i in range(1,6):
+    for i in range(1, 6):
         current_data = data.where(data['rating'] == i)
         current_train_data = current_data.sample(frac=TRAIN_SPLIT, replace=False, random_state=seed).dropna(how='all')
         current_test_data = current_data[~current_data.isin(current_train_data)].dropna(how='all')

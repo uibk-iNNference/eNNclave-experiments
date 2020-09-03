@@ -1,17 +1,12 @@
-from tensorflow.keras.models import Sequential
-import tensorflow.keras.layers as layers
-import tensorflow as tf
-
 import numpy as np
-import pandas as pd
+import tensorflow as tf
+import tensorflow.keras.layers as layers
+from tensorflow.keras.models import Sequential
 
-import json
-import os
-from os.path import join
 import plotille
 
-from amazon_prepare_data import load_books
-from amazon_eval import eval_true_accuracy
+from amazon.eval import eval_true_accuracy
+from amazon.prepare_data import load_books
 
 SEED = 1337
 tf.random.set_seed(SEED)
