@@ -1,22 +1,16 @@
-import tensorflow.keras.layers as layers
-import tensorflow.keras.applications as apps
-from tensorflow.keras.models import Sequential, load_model
-from tensorflow.keras.losses import sparse_categorical_crossentropy
-import tensorflow as tf
-
 import pandas as pd
+import tensorflow as tf
+import tensorflow.keras.layers as layers
+from tensorflow.keras.losses import sparse_categorical_crossentropy
+from tensorflow.keras.models import Sequential, load_model
 
 tf.compat.v1.set_random_seed(1337)
 
-from os.path import join
-import os
-import json
-
 import experiment_utils
-import mit_prepare_data
+import mit.prepare_data as prepare_data
 
-x_train, y_train = mit_prepare_data.load_train_set()
-x_test, y_test = mit_prepare_data.load_test_set()
+x_train, y_train = prepare_data.load_train_set()
+x_test, y_test = prepare_data.load_test_set()
 
 # generate datasets
 train_ds = experiment_utils.generate_dataset(x_train, y_train, preprocess_function=None)
@@ -45,16 +39,16 @@ dense = Sequential([
 ])
 
 model = Sequential()
-for l in extractor:
-    l.trainable = False
-    model.add(l)
+for layer in extractor:
+    layer.trainable = False
+    model.add(layer)
 # model.add(layers.MaxPooling2D(2))
 # model.add(layers.Flatten())
 model.add(layers.GlobalAveragePooling2D())
-for l in dense.layers:
-    model.add(l)
+for layer in dense.layers:
+    model.add(layer)
 
-print('Hypeparameters:')
+print('Hyperparameters:')
 print('num_epochs: {}'.format(NUM_EPOCHS))
 print('hidden_neurons: {}'.format(HIDDEN_NEURONS))
 print('training set size: {}'.format(len(y_train)))
