@@ -1,0 +1,100 @@
+2020-09-08 15:27:03.538937: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcuda.so.1
+2020-09-08 15:27:05.892123: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:08:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:06.480648: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 1 with properties: 
+pciBusID: 0000:09:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:06.481381: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:06.482976: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 2 with properties: 
+pciBusID: 0000:42:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:06.483856: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:06.485564: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 3 with properties: 
+pciBusID: 0000:43:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:06.492706: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-09-08 15:27:06.883947: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-09-08 15:27:07.247069: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-09-08 15:27:07.859278: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-09-08 15:27:08.187055: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-09-08 15:27:08.398722: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-09-08 15:27:09.081130: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-09-08 15:27:09.084359: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.086052: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.089928: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.091522: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.092817: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0, 1, 2, 3
+2020-09-08 15:27:09.093438: I tensorflow/core/platform/cpu_feature_guard.cc:143] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA
+2020-09-08 15:27:09.118677: I tensorflow/core/platform/profile_utils/cpu_utils.cc:102] CPU Frequency: 3492910000 Hz
+2020-09-08 15:27:09.121162: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x7f9de4000b20 initialized for platform Host (this does not guarantee that XLA will be used). Devices:
+2020-09-08 15:27:09.121731: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Host, Default Version
+2020-09-08 15:27:09.435557: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.442748: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.444919: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x564aa0121570 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2020-09-08 15:27:09.445703: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): GeForce RTX 2070, Compute Capability 7.5
+2020-09-08 15:27:09.446354: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (1): GeForce RTX 2070, Compute Capability 7.5
+2020-09-08 15:27:09.446716: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (2): GeForce RTX 2070, Compute Capability 7.5
+2020-09-08 15:27:09.447027: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (3): GeForce RTX 2070, Compute Capability 7.5
+2020-09-08 15:27:09.448936: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 0 with properties: 
+pciBusID: 0000:08:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:09.450524: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 1 with properties: 
+pciBusID: 0000:09:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:09.451200: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.452857: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 2 with properties: 
+pciBusID: 0000:42:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:09.453440: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.454667: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1561] Found device 3 with properties: 
+pciBusID: 0000:43:00.0 name: GeForce RTX 2070 computeCapability: 7.5
+coreClock: 1.62GHz coreCount: 36 deviceMemorySize: 7.79GiB deviceMemoryBandwidth: 417.29GiB/s
+2020-09-08 15:27:09.455354: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-09-08 15:27:09.456041: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-09-08 15:27:09.456738: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcufft.so.10
+2020-09-08 15:27:09.457437: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcurand.so.10
+2020-09-08 15:27:09.458149: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusolver.so.10
+2020-09-08 15:27:09.459017: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcusparse.so.10
+2020-09-08 15:27:09.459380: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-09-08 15:27:09.461563: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.463054: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.466437: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.468023: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.469294: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1703] Adding visible gpu devices: 0, 1, 2, 3
+2020-09-08 15:27:09.469668: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudart.so.10.1
+2020-09-08 15:27:09.473919: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1102] Device interconnect StreamExecutor with strength 1 edge matrix:
+2020-09-08 15:27:09.474518: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1108]      0 1 2 3 
+2020-09-08 15:27:09.475235: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 0:   N N N N 
+2020-09-08 15:27:09.475749: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 1:   N N N N 
+2020-09-08 15:27:09.476437: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 2:   N N N N 
+2020-09-08 15:27:09.477133: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1121] 3:   N N N N 
+2020-09-08 15:27:09.479677: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.481234: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.483562: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2020-09-08 15:27:09.484299: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 7405 MB memory) -> physical GPU (device: 0, name: GeForce RTX 2070, pci bus id: 0000:08:00.0, compute capability: 7.5)
+2020-09-08 15:27:09.485939: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2020-09-08 15:27:09.486606: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:1 with 7405 MB memory) -> physical GPU (device: 1, name: GeForce RTX 2070, pci bus id: 0000:09:00.0, compute capability: 7.5)
+2020-09-08 15:27:09.487623: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.489098: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2020-09-08 15:27:09.489804: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:2 with 7405 MB memory) -> physical GPU (device: 2, name: GeForce RTX 2070, pci bus id: 0000:42:00.0, compute capability: 7.5)
+2020-09-08 15:27:09.490622: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:981] successful NUMA node read from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero
+2020-09-08 15:27:09.491871: W tensorflow/core/common_runtime/gpu/gpu_bfc_allocator.cc:39] Overriding allow_growth setting because the TF_FORCE_GPU_ALLOW_GROWTH environment variable is set. Original config value was 0.
+2020-09-08 15:27:09.492400: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1247] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:3 with 7402 MB memory) -> physical GPU (device: 3, name: GeForce RTX 2070, pci bus id: 0000:43:00.0, compute capability: 7.5)
+2020-09-08 15:27:17.649988: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcublas.so.10
+2020-09-08 15:27:18.037852: I tensorflow/stream_executor/platform/default/dso_loader.cc:44] Successfully opened dynamic library libcudnn.so.7
+2020-09-08 15:27:26.844663: I tensorflow/stream_executor/cuda/cuda_driver.cc:763] failed to allocate 3.11G (3334807040 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2020-09-08 15:27:27.003531: W tensorflow/core/common_runtime/bfc_allocator.cc:311] Garbage collection: deallocate free memory regions (i.e., allocations) so that we can re-allocate a larger region to avoid OOM due to memory fragmentation. If you see this message frequently, you are running near the threshold of the available device memory and re-allocation may incur great performance overhead. You may try smaller batch sizes to observe the performance impact. Set TF_ENABLE_GPU_GARBAGE_COLLECTION=false if you'd like to disable this feature.
+2020-09-08 15:27:27.082175: I tensorflow/stream_executor/cuda/cuda_driver.cc:763] failed to allocate 3.70G (3972341248 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2020-09-08 15:27:27.082825: W tensorflow/core/common_runtime/bfc_allocator.cc:245] Allocator (GPU_0_bfc) ran out of memory trying to allocate 3.17GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+2020-09-08 15:27:27.083970: I tensorflow/stream_executor/cuda/cuda_driver.cc:763] failed to allocate 3.70G (3972341248 bytes) from device: CUDA_ERROR_OUT_OF_MEMORY: out of memory
+2020-09-08 15:27:27.084580: W tensorflow/core/common_runtime/bfc_allocator.cc:245] Allocator (GPU_0_bfc) ran out of memory trying to allocate 3.17GiB with freed_by_count=0. The caller indicates that this is not a failure, but may mean that there could be performance gains if more memory were available.
+WARNING:tensorflow:No training configuration found in the save file, so the model was *not* compiled. Compile it manually.
+Traceback (most recent call last):
+  File "train_all.py", line 9, in <module>
+    mit.train.main()
+  File "/scratch/alex.schloegl/ennclave-experiments/mit/train.py", line 82, in main
+    places_fixed = build_model(places_extractor, 50, trainable=False)
+  File "/scratch/alex.schloegl/ennclave-experiments/mit/train.py", line 24, in build_model
+    ret.add(layers.Dense(HIDDEN_NEURONS, activation='relu'))
+NameError: name 'HIDDEN_NEURONS' is not defined

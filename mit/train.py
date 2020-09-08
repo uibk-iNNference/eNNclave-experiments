@@ -13,6 +13,11 @@ tf.compat.v1.set_random_seed(1337)
 import experiment_utils
 import mit.prepare_data as prepare_data
 
+# config
+HIDDEN_NEURONS = 2048
+DROPOUT_RATIO = 0.4
+NUM_EPOCHS = 2000
+STEPS_PER_EPOCH = 3
 
 def build_model(extractor: Sequential, num_extractor_layers, trainable=False):
     ret = Sequential()
@@ -63,12 +68,6 @@ def main():
     test_ds = experiment_utils.generate_dataset(
         x_test, y_test, shuffle=False, repeat=False, preprocess_function=None)
     del x_test, y_test
-
-    # config
-    HIDDEN_NEURONS = 2048
-    DROPOUT_RATIO = 0.4
-    NUM_EPOCHS = 2000
-    STEPS_PER_EPOCH = 3
 
     # build model
     model_dir = 'models'
