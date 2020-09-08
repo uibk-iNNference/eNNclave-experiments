@@ -3,8 +3,6 @@ import tensorflow as tf
 import tensorflow.keras.layers as layers
 from tensorflow.keras.models import Sequential
 
-import plotille
-
 from amazon.eval import eval_true_accuracy
 from amazon.prepare_data import load_books
 
@@ -57,21 +55,6 @@ def main():
 
         print(f"Saving model under {MODEL_FILE}")
         model.save(MODEL_FILE)
-
-        history = hist.history
-        fig = plotille.Figure()
-        fig.width = 60
-        fig.height = 30
-        fig.set_x_limits(min_=0, max_=EPOCHS)
-
-        fig.plot(range(EPOCHS), history['mae'], label='Training MAE')
-        fig.plot(range(EPOCHS), history['val_mae'], label='Validation MAE')
-
-        # print(fig.show(legend=True))
-
-        #  _, mae, _ = model.evaluate(x_test, y_test, verbose = 0)
-        #  print(f"Final mean absolute error {mae}")
-
         eval_true_accuracy(model, x_train, y_train, x_test, y_test)
 
 if __name__ == "__main__":
