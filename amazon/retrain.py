@@ -69,43 +69,47 @@ def eval_split(num_layers):
     flexible_model.save(f'models/amazon_{num_layers}_flexible.h5')
 
 
-x_train, y_train, x_test, y_test = load_cds(NUM_WORDS, SEQUENCE_LENGTH, seed=SEED)
+def main():
+    x_train, y_train, x_test, y_test = load_cds(NUM_WORDS, SEQUENCE_LENGTH, seed=SEED)
 
-# get original accuracy
-original_model = load_model(MODEL_FILE)
-print("Original model on cd data:")
-eval_true_accuracy(original_model, x_train, y_train, x_test, y_test)
+    # get original accuracy
+    original_model = load_model(MODEL_FILE)
+    print("Original model on cd data:")
+    eval_true_accuracy(original_model, x_train, y_train, x_test, y_test)
 
-print("\n\n####### Retraining last layer #######")
-eval_split(1)
+    print("\n\n####### Retraining last layer #######")
+    eval_split(1)
 
-# retrain dense layers
-print("\n\n\n####### Retraining dense layers #######")
-print("####### This was used in paper  #######")
-eval_split(6)
+    # retrain dense layers
+    print("\n\n\n####### Retraining dense layers #######")
+    print("####### This was used in paper  #######")
+    eval_split(6)
 
-# retrain conv and dense layers
-print("\n\n####### Keeping only embedding and tokenizer #######")
-eval_split(15)
+    # retrain conv and dense layers
+    print("\n\n####### Keeping only embedding and tokenizer #######")
+    eval_split(15)
 
-#  retrain entire network
-print("\n\n####### Keeping only tokenizer #######")
-eval_split(16)
+    #  retrain entire network
+    print("\n\n####### Keeping only tokenizer #######")
+    eval_split(16)
 
-#  rebuild even tokenizer
-print("\n\n####### rebuilding everything #######")
-original_model = load_model(MODEL_FILE)
-x_train, y_train, x_test, y_test, _ = rebuild_cds(NUM_WORDS, SEQUENCE_LENGTH, seed=SEED)
+    #  rebuild even tokenizer
+    print("\n\n####### rebuilding everything #######")
+    original_model = load_model(MODEL_FILE)
+    x_train, y_train, x_test, y_test, _ = rebuild_cds(NUM_WORDS, SEQUENCE_LENGTH, seed=SEED)
 
-new_model = Sequential()
-for layer in original_model.layers:
-    layer.trainable = True
-    new_model.add(layer)
+    new_model = Sequential()
+    for layer in original_model.layers:
+        layer.trainable = True
+        new_model.add(layer)
 
-tf.random.set_seed(SEED)
-np.random.seed(SEED)
+    tf.random.set_seed(SEED)
+    np.random.seed(SEED)
 
-print(f"training for {EPOCHS} epochs")
-train(new_model, x_train, y_train, EPOCHS)
-eval_true_accuracy(new_model, x_train, y_train, x_test, y_test)
-new_model.save('models/amazon_new.h5')
+    print(f"training for {EPOCHS} epochs")
+    train(new_model, x_train, y_train, EPOCHS)
+    eval_true_accuracy(new_model, x_train, y_train, x_test, y_test)
+    new_model.save('models/amazon_new.h5')
+
+if __name__ == "__main__":
+    main()
