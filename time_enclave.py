@@ -1,7 +1,6 @@
 from tensorflow.keras.models import load_model, Sequential
 from tensorflow.keras.backend import clear_session
 import tensorflow as tf
-import tensorflow_datasets as tfds
 
 import numpy as np
 import time
@@ -10,21 +9,18 @@ import multiprocessing
 import sys
 import os
 
-import interop.pymatutil as pymatutil
-from enclave_layer import EnclaveLayer
+import ennclave_inference
 import experiment_utils
 
 import build_enclave
-import mit_prepare_data
-import rotten_tomatoes_prepare_data
-import imdb_prepare_data
-import amazon_prepare_data
-import flowers_prepare_data
-import mnist_prepare_data
+import mit.prepare_data as mit_prepare_data
+import amazon.prepare_data as amazon_prepare_data
+import flowers.prepare_data as flowers_prepare_data
+import mnist.prepare_data as mnist_prepare_data
 
-def time_from_file(model_path, samples):
-    model = load_model(model_path, custom_objects={'EnclaveLayer': EnclaveLayer})
-    time_dict = time_enclave_prediction(model, samples)
+def time_from_file(model_path, samples, has_enclave):
+    model = load_model(model_path)
+    time_dict = time_enclave_prediction(model, samples, has_enclave)
     return time_dict
 
 def _predict_samples(samples, num_classes, forward):
@@ -46,10 +42,9 @@ def _predict_samples(samples, num_classes, forward):
             result[i] = label
     return result
     
-def time_enclave_prediction(model, samples):
+def time_enclave_prediction(model, samples, has_enclave):
     # test if model has enclave part
     all_layers = experiment_utils.get_all_layers(model)
-    has_enclave = any([l.name == 'enclave_layer' for l in all_layers])
 
     if has_enclave:
         print("\n\nMeasuring enclave\n\n")
@@ -71,18 +66,18 @@ def time_enclave_prediction(model, samples):
         tf_prediction = tf_prediction.numpy()
 
         # final_prediction = enclave_part(tf_prediction)
-        before_setup = time.time()
-        pymatutil.initialize()
-        after_setup = time.time()
+        # before_setup = time.time()
+        # ennclave_inference.initialize()
+        # after_setup = time.time()
 
-        enclave_results = _predict_samples(tf_prediction, num_classes, pymatutil.enclave_forward)
+        enclave_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.sgx_forward)
         after_enclave = time.time()
 
-        pymatutil.teardown()
-        after_teardown = time.time()
+        # pymatutil.teardown()
+        # after_teardown = time.time()
 
         before_native = time.time()
-        native_results = _predict_samples(tf_prediction, num_classes, pymatutil.native_forward)
+        native_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.sgx_forward)
         after_native = time.time()
 
         enclave_label = np.argmax(enclave_results, axis=1)
@@ -116,17 +111,17 @@ def time_enclave_prediction(model, samples):
 
 
     tf_time = after_tf - before
-    enclave_setup_time = after_setup - before_setup
-    enclave_time = after_enclave - after_setup
-    teardown_time = after_teardown - after_enclave
+    # enclave_setup_time = after_setup - before_setup
+    enclave_time = after_enclave - after_tf
+    # teardown_time = after_teardown - after_enclave
     native_time = after_native - before_native
 
     time_dict = {
-        'enclave_setup_time': enclave_setup_time,
+        # 'enclave_setup_time': enclave_setup_time,
         'tf_time': tf_time,
         'enclave_time': enclave_time,
-        'teardown_time': teardown_time,
-        'combined_enclave_time': enclave_time+enclave_setup_time+teardown_time,
+        # 'teardown_time': teardown_time,
+        # 'combined_enclave_time': enclave_time+enclave_setup_time+teardown_time,
         'native_time': native_time,
         'enclave_label': enclave_label,
         'native_label': native_label
@@ -166,10 +161,6 @@ if __name__ == '__main__':
         sample_index = 20
     elif dataset == 'mnist':
         x_test, y_test = mnist_prepare_data.load_test_set()
-    elif dataset == 'rotten':
-        _, _, x_test, y_test, _ = rotten_tomatoes_prepare_data.load_rotten_tomatoes('./datasets')
-    elif dataset == 'imdb':
-        _, _, x_test, y_test = imdb_prepare_data.load_imdb('./datasets')
     elif dataset == 'amazon':
         _, _, x_test, y_test = amazon_prepare_data.load_cds(20000, 500)
     elif dataset == 'flowers':
@@ -179,7 +170,7 @@ if __name__ == '__main__':
 
     samples = x_test[sample_index:sample_index+1]
     
-    time_dict = time_from_file(model_path, samples)
+    time_dict = time_from_file(model_path, samples, has_enclave=layers_in_enclave>0)
     time_dict['layers_in_enclave'] = layers_in_enclave
     time_dict['correct_label'] = int(y_test[sample_index])
 

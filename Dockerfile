@@ -20,6 +20,11 @@ COPY environment.yml /ennclave-experiments/
 RUN conda env create
 
 COPY tests.sh /ennclave-experiments/
-COPY build_enclave.py experiment_utils.py /ennclave-experiments/
+COPY mnist /ennclave-experiments/mnist
+COPY amazon /ennclave-experiments/amazon
+COPY mit /ennclave-experiments/mit
+COPY flowers /ennclave-experiments/flowers
+COPY build_enclave.py experiment_utils.py time_enclave.py /ennclave-experiments/
 
-CMD "bash"
+# CMD "bash"
+CMD ["bash", "tests.sh"]

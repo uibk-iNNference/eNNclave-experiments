@@ -5,7 +5,9 @@ from experiment_utils import get_all_layers
 
 import argparse
 import pathlib
-import subprocess
+import os
+from invoke import Context
+import sys
 
 
 def get_new_filename(model_path):
@@ -31,23 +33,20 @@ def generate_enclave(enclave):
 
 
 def compile_enclave(verbose=False):
-    if verbose:
-        out = subprocess.STDOUT
-        err = subprocess.STDERR
-    else:
-        out = subprocess.DEVNULL
-        err = subprocess.DEVNULL
+    context = Context()
+    try:
+        eNNclave_home = os.environ['ENNCLAVE_HOME']
+    except KeyError:
+        print("ENNCLAVE_HOME environment variable not set", file=sys.stderr)
+        sys.exit(1)
 
-    make_result = subprocess.run(
-        ["make", "backend", "Build_Mode=HW_PRERELEASE"], stdout=out, stderr=err)
-    if make_result.returncode != 0:
-        output = ""
-        if make_result.stdout is not None:
-            output += make_result.stdout + "\n"
-        if make_result.stderr is not None:
-            output += make_result.stderr
+    with context.cd(os.path.join(eNNclave_home, 'build')):
+        result = context.run('make backend_sgx', hide=not verbose)
+        if verbose:
+            print(result.stdout)
 
-        raise OSError(output)
+        if not result.ok:
+            raise OSError(result.stdout)
 
 
 def build_enclave(model_file, n, conn=None):
