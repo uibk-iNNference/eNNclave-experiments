@@ -49,7 +49,7 @@ def train(model, target_file, train_ds, test_ds, epochs=2000, model_dir='models'
                   metrics=['accuracy'])
 
     model.fit(train_ds,
-              epochs=NUM_EPOCHS,
+              epochs=epochs,
               steps_per_epoch=STEPS_PER_EPOCH,
               validation_data=test_ds,
               validation_steps=STEPS_PER_EPOCH)
