@@ -4,7 +4,7 @@ import numpy as np
 
 import experiment_utils
 
-import mit_prepare_data
+import mit.prepare_data as mit_prepare_data
 
 import os
 from os.path import join
