@@ -35,7 +35,7 @@ def build_model(extractor: Sequential, num_extractor_layers, trainable=False):
     return ret
 
 
-def train(model, target_file, model_dir='models'):
+def train(model, target_file, train_ds, test_ds, model_dir='models'):
     target_path = join(model_dir, target_file)
     print('Hyperparameters:')
     print('num_epochs: {}'.format(NUM_EPOCHS))
@@ -79,20 +79,20 @@ def main():
     places_extractor = load_model(source_path)
     print("Training fixed")
     places_fixed = build_model(places_extractor, 50, trainable=False)
-    train(places_fixed, 'mit_places_fixed.h5')
+    train(places_fixed, 'mit_places_fixed.h5', train_ds, test_ds)
     print("Training flexible")
     places_extractor = load_model(source_path)  # we need to reload to ensure new layer weights
     places_flexible = build_model(places_extractor, 50, trainable=True)
-    train(places_flexible, 'mit_places_flexible.h5')
+    train(places_flexible, 'mit_places_flexible.h5', train_ds, test_ds)
 
     print("Training model based on Imagenet database")
     imagenet_extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
     imagenet_fixed = build_model(imagenet_extractor, 19, trainable=False)
-    train(imagenet_fixed, 'mit_imagenet_fixed.h5')
+    train(imagenet_fixed, 'mit_imagenet_fixed.h5', train_ds, test_ds)
     print("Training flexible")
     imagenet_extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
     imagenet_flexible = build_model(imagenet_extractor, 19, trainable=True)
-    train(imagenet_flexible, 'mit_imagenet_flexible.h5')
+    train(imagenet_flexible, 'mit_imagenet_flexible.h5', train_ds, test_ds)
 
 if __name__ == "__main__":
     main()
