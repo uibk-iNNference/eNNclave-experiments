@@ -16,8 +16,8 @@ import mit.prepare_data as prepare_data
 # config
 HIDDEN_NEURONS = 2048
 DROPOUT_RATIO = 0.4
-NUM_EPOCHS = 2000
 STEPS_PER_EPOCH = 3
+
 
 def build_model(extractor: Sequential, num_extractor_layers, trainable=False):
     ret = Sequential()
@@ -37,10 +37,10 @@ def build_model(extractor: Sequential, num_extractor_layers, trainable=False):
     return ret
 
 
-def train(model, target_file, train_ds, test_ds, model_dir='models'):
+def train(model, target_file, train_ds, test_ds, epochs=2000, model_dir='models'):
     target_path = join(model_dir, target_file)
     print('Hyperparameters:')
-    print('num_epochs: {}'.format(NUM_EPOCHS))
+    print('num_epochs: {}'.format(epochs))
     print('hidden_neurons: {}'.format(HIDDEN_NEURONS))
     print()
 
@@ -64,7 +64,8 @@ def train(model, target_file, train_ds, test_ds, model_dir='models'):
 
 def main():
     x_train, y_train = prepare_data.load_train_set()
-    train_ds = experiment_utils.generate_dataset(x_train, y_train, preprocess_function=None)
+    train_ds = experiment_utils.generate_dataset(
+        x_train, y_train, preprocess_function=None)
     del x_train, y_train
     x_test, y_test = prepare_data.load_test_set()
     test_ds = experiment_utils.generate_dataset(
@@ -79,22 +80,40 @@ def main():
     print("Training model based on Places database")
     print('Trying to load model from %s' % source_path)
     places_extractor = load_model(source_path)
+    print("Training")
+    places_unrefined = build_model(places_extractor, 50, trainable=False)
+    train(places_unrefined, 'mit_places_unrefined.h5', train_ds, test_ds)
+    del(places_unrefined)
+
     print("Training fixed")
-    places_fixed = build_model(places_extractor, 50, trainable=False)
-    train(places_fixed, 'mit_places_fixed.h5', train_ds, test_ds)
+    places_fixed = load_model('models/mit_places_unrefined.h5')
+    train(places_fixed, 'mit_places_fixed.h5', train_ds, test_ds, epochs=200)
+
     print("Training flexible")
-    places_extractor = load_model(source_path)  # we need to reload to ensure new layer weights
-    places_flexible = build_model(places_extractor, 50, trainable=True)
-    train(places_flexible, 'mit_places_flexible.h5', train_ds, test_ds)
+    places_flexible = load_model('models/mit_places_unrefined.h5')
+    for layer in places_flexible.layers:
+        layer.trainable = True
+    train(places_flexible, 'mit_places_flexible.h5', train_ds, test_ds, epochs=200)
 
     print("Training model based on Imagenet database")
-    imagenet_extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
-    imagenet_fixed = build_model(imagenet_extractor, 19, trainable=False)
-    train(imagenet_fixed, 'mit_imagenet_fixed.h5', train_ds, test_ds)
+    print("Training")
+    imagenet_extractor = apps.VGG16(
+        include_top=False, weights='imagenet', input_shape=(224, 224, 3))
+    imagenet_unrefined = build_model(imagenet_extractor, 19, trainable=False)
+    train(imagenet_unrefined, 'mit_imagenet_unrefined.h5', train_ds, test_ds)
+
+    print("Training fixed")
+    imagenet_fixed = load_model('models/mit_imagenet_unrefined.h5')
+    train(imagenet_fixed, 'mit_imagenet_fixed', train_ds, test_ds, epochs=200)
+    del(imagenet_fixed)
+
     print("Training flexible")
-    imagenet_extractor = apps.VGG16(include_top=False, weights='imagenet', input_shape=(224, 224, 3))
-    imagenet_flexible = build_model(imagenet_extractor, 19, trainable=True)
-    train(imagenet_flexible, 'mit_imagenet_flexible.h5', train_ds, test_ds)
+    imagenet_flexible = load_model('models/mit_imagenet_unrefined.h5')
+    for layer in imagenet_flexible.layers:
+        layer.trainable = True
+    train(imagenet_flexible, 'mit_imagenet_flexible.h5', train_ds, test_ds, epochs=200)
+    del(imagenet_flexible)
+
 
 if __name__ == "__main__":
     main()
