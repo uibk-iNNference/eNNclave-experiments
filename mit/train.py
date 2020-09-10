@@ -26,6 +26,8 @@ def build_model(extractor: Sequential, num_extractor_layers, trainable=False):
         layer.trainable = trainable
         ret.add(layer)
 
+    ret.add(layers.GlobalAveragePooling2D())
+
     ret.add(layers.Dense(HIDDEN_NEURONS, activation='relu'))
     ret.add(layers.Dropout(DROPOUT_RATIO))
     ret.add(layers.Dense(HIDDEN_NEURONS, activation='relu'))
