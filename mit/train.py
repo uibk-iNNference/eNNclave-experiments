@@ -121,7 +121,7 @@ def main():
 
     print("Retraining fixed")
     imagenet_fixed = load_model(imagenet_unrefined_path)
-    train(imagenet_fixed, 'mit_imagenet_fixed', train_ds, test_ds, epochs=200, learning_rate=0.000001)
+    train(imagenet_fixed, 'mit_imagenet_fixed.h5', train_ds, test_ds, epochs=200, learning_rate=0.000001)
     del(imagenet_fixed)
 
     print("Retraining flexible")
