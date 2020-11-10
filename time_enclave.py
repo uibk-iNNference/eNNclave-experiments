@@ -1,26 +1,23 @@
 from tensorflow.keras.models import load_model, Sequential
-from tensorflow.keras.backend import clear_session
 import tensorflow as tf
 
 import numpy as np
 import time
 import json
-import multiprocessing
 import sys
 import os
 
-import ennclave_inference
 import experiment_utils
 
-import build_enclave
+import ennclave_inference 
 import mit.prepare_data as mit_prepare_data
 import amazon.prepare_data as amazon_prepare_data
 import flowers.prepare_data as flowers_prepare_data
 import mnist.prepare_data as mnist_prepare_data
 
-def time_from_file(model_path, samples, has_enclave):
+def time_from_file(model_path, samples, num_classes, has_enclave):
     model = load_model(model_path)
-    time_dict = time_enclave_prediction(model, samples, has_enclave)
+    time_dict = time_enclave_prediction(model, samples, num_classes, has_enclave)
     return time_dict
 
 def _predict_samples(samples, num_classes, forward):
@@ -29,34 +26,32 @@ def _predict_samples(samples, num_classes, forward):
     result = np.zeros((samples.shape[0], num_classes))
     print("Predicting")
     for i, x in enumerate(samples):
-        label = forward(x.astype(np.float32).tobytes(), np.prod(x.shape))
+        return_bytes = forward(x.astype(np.float32).tobytes(), np.prod(x.shape), num_classes)
+        return_values = np.frombuffer(return_bytes, dtype=np.float32)
+        label = np.argmax(return_values)
         #  print('label: %d\n' % label)
 
         if label >= num_classes or label < 0:
             print("Got label %d, out of %d possible..." % (label, num_classes))
             continue
 
-        if num_classes > 1:
-            result[i, label] = 1
-        else:
-            result[i] = label
+        result[i] = return_values
     return result
     
-def time_enclave_prediction(model, samples, has_enclave):
+def time_enclave_prediction(model, samples, num_classes, has_enclave):
     # test if model has enclave part
     all_layers = experiment_utils.get_all_layers(model)
 
     if has_enclave:
         print("\n\nMeasuring enclave\n\n")
         # split model into TF and enclave part
+        enclave_start = 0
         for enclave_start,l in enumerate(model.layers):
             if "enclave" in l.name:
                 break
 
         # measure tf, native, and enclave times
         tf_part = Sequential(model.layers[:enclave_start])
-        enclave_layer = model.layers[enclave_start]
-        num_classes = enclave_layer.num_classes
 
         before = time.time()
         # predict dataset
@@ -77,6 +72,7 @@ def time_enclave_prediction(model, samples, has_enclave):
         # after_teardown = time.time()
 
         before_native = time.time()
+        breakpoint()
         native_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.sgx_forward)
         after_native = time.time()
 
@@ -159,18 +155,22 @@ if __name__ == '__main__':
     if dataset == 'mit':
         x_test, y_test = mit_prepare_data.load_test_set()
         sample_index = 20
+        num_classes = 67
     elif dataset == 'mnist':
         x_test, y_test = mnist_prepare_data.load_test_set()
+        num_classes = 10
     elif dataset == 'amazon':
         _, _, x_test, y_test = amazon_prepare_data.load_cds(20000, 500)
+        num_classes = 5
     elif dataset == 'flowers':
         _, _, x_test, y_test = flowers_prepare_data.load_data()
+        num_classes = 5
     else:
         raise ValueError("Unknown dataset " + dataset)
 
     samples = x_test[sample_index:sample_index+1]
     
-    time_dict = time_from_file(model_path, samples, has_enclave=layers_in_enclave>0)
+    time_dict = time_from_file(model_path, samples, num_classes, has_enclave=layers_in_enclave>0)
     time_dict['layers_in_enclave'] = layers_in_enclave
     time_dict['correct_label'] = int(y_test[sample_index])
 
