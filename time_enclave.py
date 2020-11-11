@@ -79,7 +79,6 @@ def time_enclave_prediction(model, samples, num_classes, has_enclave):
         enclave_label = int(enclave_label[0]) # numpy does some type stuff we have to fix
         native_label = np.argmax(native_results, axis=1)
         native_label = int(native_label[0])
-        print(native_results)
             
         print('\n')
         print('Enclave label: %d' % enclave_label)
@@ -102,7 +101,6 @@ def time_enclave_prediction(model, samples, num_classes, has_enclave):
         before_native = after_tf
         after_native = after_tf
 
-        print(tf_prediction)
         print(f"\nTF label {int(np.argmax(tf_prediction,axis=1)[0])}")
 
         enclave_label = -1
