@@ -33,3 +33,27 @@ The full command line is as follows:
 mmconvert --srcFramework caffe --inputNetwork deploy_vgg16_places365.prototxt --inputWeight vgg16_places365.caffemodel --dstFramework keras --outputModel vgg16_places365.h5
 ```
 After the command is done, there should be a `vgg16_places365.h5` file in your `/tmp` directory, which you can copy to the models directory and continue from there.
+
+### Obtaining the datasets
+
+### Setting up the eNNclave framework
+
+## Training the models
+
+### MNIST
+
+The MNIST model is not used in the paper, but it is a good model to test the toolchain and environment.
+
+### Flowers
+
+### MIT-67
+
+### Amazon
+
+### Obtaining our models
+
+## Accuracy evaluation
+
+## Performance evaluation
+
+## Running the experiments in Docker
