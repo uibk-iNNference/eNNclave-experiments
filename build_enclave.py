@@ -33,9 +33,14 @@ def compile_enclave(verbose=False):
         sys.exit(1)
 
     with context.cd(os.path.join(eNNclave_home, 'build')):
-        result = context.run('make backend_sgx', hide=not verbose)
-        if verbose:
-            print(result.stdout)
+        result = context.run('make', hide=not verbose)
+
+        if not result.ok:
+            raise OSError(result.stdout)
+
+    print("Encrypting parameter file")
+    with context.cd(eNNclave_home):
+        result = context.run('build/backend_sgx_encryptor', hide=not verbose)
 
         if not result.ok:
             raise OSError(result.stdout)
