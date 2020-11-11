@@ -72,14 +72,18 @@ def time_enclave_prediction(model, samples, num_classes, has_enclave):
         # after_teardown = time.time()
 
         before_native = time.time()
-        breakpoint()
-        native_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.sgx_forward)
+        native_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.native_forward)
         after_native = time.time()
 
         enclave_label = np.argmax(enclave_results, axis=1)
         enclave_label = int(enclave_label[0]) # numpy does some type stuff we have to fix
         native_label = np.argmax(native_results, axis=1)
         native_label = int(native_label[0])
+        print(native_results)
+            
+        print('\n')
+        print('Enclave label: %d' % enclave_label)
+        print('Native label: %d' % native_label)
 
     else:
         print("\n\nNOT Measuring enclave\n\n")
@@ -98,12 +102,12 @@ def time_enclave_prediction(model, samples, num_classes, has_enclave):
         before_native = after_tf
         after_native = after_tf
 
+        print(tf_prediction)
+        print(f"\nTF label {int(np.argmax(tf_prediction,axis=1)[0])}")
+
         enclave_label = -1
         native_label = -1
 
-    print('\n')
-    print('Enclave label: %d' % enclave_label)
-    print('Native label: %d' % native_label)
 
 
     tf_time = after_tf - before

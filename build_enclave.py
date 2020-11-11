@@ -57,7 +57,7 @@ def build_enclave(model_file, n):
 
     enclave_input_shape = all_layers[-n].input_shape
     enclave.build(input_shape=enclave_input_shape)
-    
+
     # generate parameter file
     enclave.generate_state()
     # build cpp files and config for sgx
@@ -104,5 +104,4 @@ if __name__ == '__main__':
     model_file = args.model_file
     n = args.n
 
-    breakpoint()
     build_enclave(model_file, n)
