@@ -22,14 +22,6 @@ def get_new_filename(model_path):
     return target_file
 
 
-def generate_enclave(enclave):
-    # build cpp and bin files for sgx
-    enclave.generate_state()
-    enclave.generate_forward(target_dir='backend/sgx/trusted')
-    enclave.generate_config(target_dir='backend/sgx/trusted/')
-    # same for regular C
-    enclave.generate_state()
-    enclave.generate_forward(target_dir='backend/native')
 
 
 def compile_enclave(verbose=False):
@@ -49,7 +41,7 @@ def compile_enclave(verbose=False):
             raise OSError(result.stdout)
 
 
-def build_enclave(model_file, n, conn=None):
+def build_enclave(model_file, n):
     print('Loading model from %s' % model_file)
     model = load_model(model_file, custom_objects={'Enclave': Enclave})
 
@@ -65,9 +57,15 @@ def build_enclave(model_file, n, conn=None):
 
     enclave_input_shape = all_layers[-n].input_shape
     enclave.build(input_shape=enclave_input_shape)
+    
+    # generate parameter file
     enclave.generate_state()
+    # build cpp files and config for sgx
+    enclave.generate_forward(backend='sgx')
     enclave.generate_config()
-    enclave.generate_forward('sgx')
+
+    # generate cpp file for native C
+    enclave.generate_forward(backend='native')
 
     # build replacement layer for original model
     enclave_model = Sequential(all_layers[:-n])
@@ -106,4 +104,5 @@ if __name__ == '__main__':
     model_file = args.model_file
     n = args.n
 
+    breakpoint()
     build_enclave(model_file, n)
