@@ -22,9 +22,6 @@ fi
 basename=${model_path##*/}
 dataset=${basename%.*}
 
-make clean
-make
-
 # generate pure tf time
 for i in $(seq $runs_per_index)
 do

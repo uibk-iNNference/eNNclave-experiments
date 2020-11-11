@@ -39,23 +39,12 @@ def _predict_samples(samples, num_classes, forward):
     return result
     
 def time_enclave_prediction(model, samples, num_classes, has_enclave):
-    # test if model has enclave part
-    all_layers = experiment_utils.get_all_layers(model)
-
     if has_enclave:
         print("\n\nMeasuring enclave\n\n")
-        # split model into TF and enclave part
-        enclave_start = 0
-        for enclave_start,l in enumerate(model.layers):
-            if "enclave" in l.name:
-                break
-
-        # measure tf, native, and enclave times
-        tf_part = Sequential(model.layers[:enclave_start])
 
         before = time.time()
         # predict dataset
-        tf_prediction = tf_part(samples)
+        tf_prediction = model(samples)
         after_tf = time.time()
 
         tf_prediction = tf_prediction.numpy()
@@ -64,6 +53,7 @@ def time_enclave_prediction(model, samples, num_classes, has_enclave):
         # before_setup = time.time()
         # ennclave_inference.initialize()
         # after_setup = time.time()
+
 
         enclave_results = _predict_samples(tf_prediction, num_classes, ennclave_inference.sgx_forward)
         after_enclave = time.time()
