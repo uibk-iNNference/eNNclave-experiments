@@ -1,6 +1,6 @@
 # Experiments for eNNclave paper
 
-These are the experiments presented in our paper *eNNclave: offline inference with model confidentiality*.
+These are the experiments presented in our paper [eNNclave: offline inference with model confidentiality](https://dl.acm.org/doi/10.1145/3411508.3421376).
 
 ## Setup
 
@@ -36,24 +36,61 @@ After the command is done, there should be a `vgg16_places365.h5` file in your `
 
 ### Obtaining the datasets
 
+The datasets can be obtained from the following links:
+ - [MNIST](http://yann.lecun.com/exdb/mnist/)
+ - [MIT67](http://web.mit.edu/torralba/www/indoor.html)
+ - [Amazon Review Data](https://jmcauley.ucsd.edu/data/amazon/)
+ - [Flowers](https://www.kaggle.com/alxmamaev/flowers-recognition/data)
+
 ### Setting up the eNNclave framework
 
+The instructions for setting up the framework can be found in the [eNNclave repository](https://github.com/alxshine/eNNclave)
+
 ## Training the models
+
+Here are the instructions for training the models.
+Seeds should be set in all training scripts and the location for downloading our models can be found at the end of this section.
+Due to the compartmentalization of the scripts you need to call them as models, and not as scripts directly.
+For example, running the [mnist/train.py](mnist/train.py) script, you need to call it as
+```shell
+python -m mnist.train
+```
 
 ### MNIST
 
 The MNIST model is not used in the paper, but it is a good model to test the toolchain and environment.
+Training the model is done via the [mnist/train](mnist/train.py) script.
 
 ### Flowers
 
+The flower model can be trained using the [flowers/train](flowers/train.py) script.
+
 ### MIT-67
+
+Training both accuracy variants for the MIT is done automatically in the [mit/train](mit/train.py) script.
 
 ### Amazon
 
+Again, use the [amazon/train](amazon/train.py) script.
+
 ### Obtaining our models
+
+Our parameter sets for the model weights can be found [here](https://ifi-nabu.uibk.ac.at/index.php/s/AFdf6CmxHntAQeb)
 
 ## Accuracy evaluation
 
+Once you have the trained models, you can use the [mit/evaluate_accuracy](mit/evaluate_accuracy.py) script to evaluate the accuracy of the frozen and unfrozen variants of the model.
+
 ## Performance evaluation
 
+First ensure that you have correctly set up the [eNNclave framework](https://github.com/alxshine/eNNclave).
+Also check that `ENNCLAVE_HOME` and the `LD_LIBRARY_PATH` are correctly set.
+Then you can use the [build_enclave](build_enclave.py) and [time_enclave](time_enclave.py) scripts for building the enclave and timing the execution.
+
+Our [batch_time.sh](batch_time.sh) script automates this process for a given model and a number of splits.
+Note that when passing the desired model to the shell script, please leave out the `.h5` file ending.
+
 ## Running the experiments in Docker
+
+There is a Dockerfile for running the experiments, but that's not 100% stable right now.
+I will include a shell script for launching Docker with mounts for the model and datasets directory ASAP (I promise).

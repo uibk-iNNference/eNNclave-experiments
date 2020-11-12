@@ -22,7 +22,7 @@ def get_new_filename(model_path):
     return target_file
 
 
-
+# TODO: ensure eNNclave build directory
 
 def compile_enclave(verbose=False):
     context = Context()
