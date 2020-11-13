@@ -19,12 +19,12 @@ WORKDIR /ennclave-experiments
 COPY environment.yml /ennclave-experiments/
 RUN conda env create
 
-COPY tests.sh /ennclave-experiments/
+COPY docker_init.sh docker_ennclave_setup.sh docker_test.sh /ennclave-experiments/
 COPY mnist /ennclave-experiments/mnist
 COPY amazon /ennclave-experiments/amazon
 COPY mit /ennclave-experiments/mit
 COPY flowers /ennclave-experiments/flowers
 COPY build_enclave.py experiment_utils.py time_enclave.py /ennclave-experiments/
 
-# CMD "bash"
-CMD ["bash", "tests.sh"]
+CMD "bash"
+# CMD ["bash", "tests.sh"]

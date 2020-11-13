@@ -67,7 +67,7 @@ The flower model can be trained using the [flowers/train](flowers/train.py) scri
 
 ### MIT-67
 
-Training both accuracy variants for the MIT is done automatically in the [mit/train](mit/train.py) script.
+Training both accuracy variants for the MIT model is done automatically in the [mit/train](mit/train.py) script.
 
 ### Amazon
 
@@ -92,5 +92,20 @@ Note that when passing the desired model to the shell script, please leave out t
 
 ## Running the experiments in Docker
 
-There is a Dockerfile for running the experiments, but that's not 100% stable right now.
-I will include a shell script for launching Docker with mounts for the model and datasets directory ASAP (I promise).
+For ease of use we provide a Dockerfile based on the Dockerfile for the [eNNclave framework](https://github.com/alxshine/eNNclave/blob/master/Dockerfile).
+Building the docker image can be done through the [docker_build.sh](docker_build.sh) script, which automatically tags the container for our run script.
+To make models, datasets, and resulting timing_logs available I recommend creating bind mounts when running the docker container.
+The [docker_run.sh](docker_run.sh) script already does this.
+
+### Environment initialization
+
+Before the experiments work, the paths must be correctly set.
+This is done in the [docker_init.sh](docker_init.sh) script, which can be `source`'d from the running image.
+
+Setting up the eNNclave framework in the image can be done via the [docker_ennclave_setup.sh](docker_ennclave_setup.sh) script also provided.
+
+### A note on bind mounts and file ownership.
+
+If you run docker as root user it can happen that there are permission issues for the bind mounts, both inside the container and outside.
+This is hard for me to verify as I use [docker rootless](https://docs.docker.com/engine/security/rootless/).
+Should you encounter issues with this when trying to replicate the experiments, please create an issue.
