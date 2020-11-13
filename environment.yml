@@ -5,7 +5,7 @@ dependencies:
   - cudatoolkit=10.1.168
   - cudnn=7.6.5
   - pip:
-    - tensorflow-gpu==2.2.0
+    - tensorflow==2.2.0
     - numpy
     - pandas
     - plotille
